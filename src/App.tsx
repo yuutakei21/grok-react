@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { CssBaseline, Container, Typography, Button, Box } from '@mui/material';
 import FormExample from './components/FormExample';
 import Register from './components/Register';
 import Login from './components/Login';
-import { CssBaseline, Container, Typography, Button, Box } from '@mui/material';
 
-const VERSION = process.env.REACT_APP_VERSION || 'unknown';
-const BUILD_TIME = process.env.REACT_APP_BUILD_TIME || 'unknown';
+
+const VERSION = import.meta.env.REACT_APP_VERSION || 'unknown';
+const BUILD_TIME = import.meta.env.REACT_APP_BUILD_TIME || 'unknown';
 
 const Home: React.FC = () => {
   return (
