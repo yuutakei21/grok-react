@@ -2,7 +2,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
-import { visualizer } from 'rollup-plugin-visualizer'; // Named export
+import { visualizer } from "rollup-plugin-visualizer"; // Named export
 
 export default defineConfig({
   plugins: [
@@ -16,6 +16,7 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    host: "0.0.0.0",
   },
   build: {
     outDir: "dist",
