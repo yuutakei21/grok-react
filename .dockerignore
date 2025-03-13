@@ -1,6 +1,44 @@
+# Node.js / Yarn
 node_modules
+yarn.lock # Có thể giữ nếu mày muốn lock version trong Docker
+*.log
 npm-debug.log
-Dockerfile
+yarn-error.log
+
+# Build output
+dist
+build
+
+# Bundle analyzer output
+stats.html
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# TypeScript
+*.tsbuildinfo
+
+# Cypress
+cypress/videos
+cypress/screenshots
+
+# Git
 .git
 .gitignore
-cypress
+
+# IDE / Editor
+.vscode
+.idea
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.swp
+*.bak

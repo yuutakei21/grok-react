@@ -16,22 +16,11 @@ interface RegisterValues {
 }
 
 const validationSchema = Yup.object({
-  firstName: Yup.string()
-    .min(2, 'Họ phải ít nhất 2 ký tự')
-    .required('Họ là bắt buộc'),
-  lastName: Yup.string()
-    .min(2, 'Tên phải ít nhất 2 ký tự')
-    .required('Tên là bắt buộc'),
-  birthday: Yup.date()
-    .nullable()
-    .max(new Date(), 'Ngày sinh không được trong tương lai')
-    .required('Ngày sinh là bắt buộc'),
-  email: Yup.string()
-    .email('Email không hợp lệ')
-    .required('Email là bắt buộc'),
-  password: Yup.string()
-    .min(6, 'Mật khẩu phải ít nhất 6 ký tự')
-    .required('Mật khẩu là bắt buộc'),
+  firstName: Yup.string().min(2, 'Họ phải ít nhất 2 ký tự').required('Họ là bắt buộc'),
+  lastName: Yup.string().min(2, 'Tên phải ít nhất 2 ký tự').required('Tên là bắt buộc'),
+  birthday: Yup.date().nullable().max(new Date(), 'Ngày sinh không được trong tương lai').required('Ngày sinh là bắt buộc'),
+  email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
+  password: Yup.string().min(6, 'Mật khẩu phải ít nhất 6 ký tự').required('Mật khẩu là bắt buộc'),
 });
 
 const Register: React.FC = () => {
@@ -52,8 +41,12 @@ const Register: React.FC = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 2, maxWidth: '400px', mx: 'auto' }}>
-        <Typography variant="h5" align="center" gutterBottom>
+      <Box
+        component="form"
+        onSubmit={formik.handleSubmit}
+        className="mt-8 max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg" // Tailwind classes
+      >
+        <Typography variant="h5" align="center" gutterBottom className="text-gray-800">
           Đăng Ký
         </Typography>
 
@@ -65,6 +58,7 @@ const Register: React.FC = () => {
           onBlur={() => formik.setFieldTouched('firstName', true)}
           error={formik.touched.firstName && Boolean(formik.errors.firstName)}
           helperText={formik.touched.firstName && formik.errors.firstName}
+          className="mb-4" // Tailwind margin
         />
 
         <UITextField
@@ -75,6 +69,7 @@ const Register: React.FC = () => {
           onBlur={() => formik.setFieldTouched('lastName', true)}
           error={formik.touched.lastName && Boolean(formik.errors.lastName)}
           helperText={formik.touched.lastName && formik.errors.lastName}
+          className="mb-4"
         />
 
         <UIDatePicker
@@ -83,8 +78,10 @@ const Register: React.FC = () => {
           value={formik.values.birthday}
           onChange={(date) => formik.setFieldValue('birthday', date)}
           maxDate={new Date()}
+          onBlur={() => formik.setFieldTouched('birthday', true)}
           error={formik.touched.birthday && Boolean(formik.errors.birthday)}
           helperText={formik.touched.birthday && formik.errors.birthday}
+          className="mb-4"
         />
 
         <UITextField
@@ -95,6 +92,7 @@ const Register: React.FC = () => {
           onBlur={() => formik.setFieldTouched('email', true)}
           error={formik.touched.email && Boolean(formik.errors.email)}
           helperText={formik.touched.email && formik.errors.email}
+          className="mb-4"
         />
 
         <UITextField
@@ -106,14 +104,23 @@ const Register: React.FC = () => {
           onBlur={() => formik.setFieldTouched('password', true)}
           error={formik.touched.password && Boolean(formik.errors.password)}
           helperText={formik.touched.password && formik.errors.password}
+          className="mb-4"
         />
 
-        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-          Đăng Ký
-        </Button>
-        <Button component={Link} to="/" variant="outlined" color="secondary" sx={{ mt: 2, ml: 2 }}>
-          Quay lại Trang chủ
-        </Button>
+        <div className="flex justify-between">
+          <Button type="submit" variant="contained" color="primary" className="bg-blue-600 hover:bg-blue-700">
+            Đăng Ký
+          </Button>
+          <Button
+            component={Link}
+            to="/"
+            variant="outlined"
+            color="secondary"
+            className="border-gray-500 text-gray-700 hover:border-gray-700"
+          >
+            Quay lại Trang chủ
+          </Button>
+        </div>
       </Box>
     </LocalizationProvider>
   );
