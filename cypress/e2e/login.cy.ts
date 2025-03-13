@@ -1,6 +1,6 @@
 describe('Login Page E2E Test', () => {
   beforeEach(() => {
-    cy.visit('http://localhost/login');
+    cy.visit('http://localhost:3000/login');
   });
 
   it('should login successfully with correct credentials', () => {
