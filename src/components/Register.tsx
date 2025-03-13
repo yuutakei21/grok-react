@@ -1,28 +1,48 @@
 import React from 'react';
-import { TextField, Button, Box } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { UITextField, UIDatePicker } from '../ui-lib';
 
 interface RegisterValues {
-  username: string;
+  firstName: string;
+  lastName: string;
+  birthday: Date | null;
   email: string;
   password: string;
-  confirmPassword: string;
 }
 
 const validationSchema = Yup.object({
-  username: Yup.string().min(3, 'Tên người dùng phải ít nhất 3 ký tự').required('Tên người dùng là bắt buộc'),
-  email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
-  password: Yup.string().min(6, 'Mật khẩu phải ít nhất 6 ký tự').required('Mật khẩu là bắt buộc'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Mật khẩu xác nhận không khớp')
-    .required('Xác nhận mật khẩu là bắt buộc'),
+  firstName: Yup.string()
+    .min(2, 'Họ phải ít nhất 2 ký tự')
+    .required('Họ là bắt buộc'),
+  lastName: Yup.string()
+    .min(2, 'Tên phải ít nhất 2 ký tự')
+    .required('Tên là bắt buộc'),
+  birthday: Yup.date()
+    .nullable()
+    .max(new Date(), 'Ngày sinh không được trong tương lai')
+    .required('Ngày sinh là bắt buộc'),
+  email: Yup.string()
+    .email('Email không hợp lệ')
+    .required('Email là bắt buộc'),
+  password: Yup.string()
+    .min(6, 'Mật khẩu phải ít nhất 6 ký tự')
+    .required('Mật khẩu là bắt buộc'),
 });
 
 const Register: React.FC = () => {
   const formik = useFormik<RegisterValues>({
-    initialValues: { username: '', email: '', password: '', confirmPassword: '' },
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      birthday: null,
+      email: '',
+      password: '',
+    },
     validationSchema,
     onSubmit: (values, { resetForm }) => {
       console.log('Register submitted:', values);
@@ -31,60 +51,71 @@ const Register: React.FC = () => {
   });
 
   return (
-    <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 2, maxWidth: '400px', mx: 'auto' }}>
-      <TextField
-        label="Username"
-        name="username"
-        value={formik.values.username}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.username && Boolean(formik.errors.username)}
-        helperText={formik.touched.username && formik.errors.username}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Email"
-        name="email"
-        value={formik.values.email}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.email && Boolean(formik.errors.email)}
-        helperText={formik.touched.email && formik.errors.email}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Password"
-        name="password"
-        type="password"
-        value={formik.values.password}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.password && Boolean(formik.errors.password)}
-        helperText={formik.touched.password && formik.errors.password}
-        fullWidth
-        margin="normal"
-      />
-      <TextField
-        label="Confirm Password"
-        name="confirmPassword"
-        type="password"
-        value={formik.values.confirmPassword}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
-        helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
-        fullWidth
-        margin="normal"
-      />
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-        Register
-      </Button>
-      <Button component={Link} to="/" variant="outlined" color="secondary" sx={{ mt: 2, ml: 2 }}>
-        Back to Home
-      </Button>
-    </Box>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 2, maxWidth: '400px', mx: 'auto' }}>
+        <Typography variant="h5" align="center" gutterBottom>
+          Đăng Ký
+        </Typography>
+
+        <UITextField
+          label="Họ"
+          name="firstName"
+          value={formik.values.firstName}
+          onChange={(value) => formik.setFieldValue('firstName', value)}
+          onBlur={() => formik.setFieldTouched('firstName', true)}
+          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+          helperText={formik.touched.firstName && formik.errors.firstName}
+        />
+
+        <UITextField
+          label="Tên"
+          name="lastName"
+          value={formik.values.lastName}
+          onChange={(value) => formik.setFieldValue('lastName', value)}
+          onBlur={() => formik.setFieldTouched('lastName', true)}
+          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+          helperText={formik.touched.lastName && formik.errors.lastName}
+        />
+
+        <UIDatePicker
+          label="Ngày sinh"
+          name="birthday"
+          value={formik.values.birthday}
+          onChange={(date) => formik.setFieldValue('birthday', date)}
+          maxDate={new Date()}
+          error={formik.touched.birthday && Boolean(formik.errors.birthday)}
+          helperText={formik.touched.birthday && formik.errors.birthday}
+        />
+
+        <UITextField
+          label="Email"
+          name="email"
+          value={formik.values.email}
+          onChange={(value) => formik.setFieldValue('email', value)}
+          onBlur={() => formik.setFieldTouched('email', true)}
+          error={formik.touched.email && Boolean(formik.errors.email)}
+          helperText={formik.touched.email && formik.errors.email}
+        />
+
+        <UITextField
+          label="Mật khẩu"
+          name="password"
+          type="password"
+          value={formik.values.password}
+          onChange={(value) => formik.setFieldValue('password', value)}
+          onBlur={() => formik.setFieldTouched('password', true)}
+          error={formik.touched.password && Boolean(formik.errors.password)}
+          helperText={formik.touched.password && formik.errors.password}
+        />
+
+        <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+          Đăng Ký
+        </Button>
+        <Button component={Link} to="/" variant="outlined" color="secondary" sx={{ mt: 2, ml: 2 }}>
+          Quay lại Trang chủ
+        </Button>
+      </Box>
+    </LocalizationProvider>
   );
 };
 
