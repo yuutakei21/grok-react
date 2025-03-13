@@ -78,7 +78,6 @@ const Register: React.FC = () => {
           value={formik.values.birthday}
           onChange={(date) => formik.setFieldValue('birthday', date)}
           maxDate={new Date()}
-          onBlur={() => formik.setFieldTouched('birthday', true)}
           error={formik.touched.birthday && Boolean(formik.errors.birthday)}
           helperText={formik.touched.birthday && formik.errors.birthday}
           className="mb-4"
