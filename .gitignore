@@ -1,1 +1,45 @@
-node_modules
+# Node.js / Yarn
+node_modules/
+yarn.lock # Có thể giữ nếu mày muốn lock version, nhưng thường bỏ khi dùng CI/CD
+*.log
+npm-debug.log
+yarn-error.log
+
+# Build output
+dist/
+build/
+
+# Bundle analyzer output
+stats.html
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Docker
+Dockerfile
+docker-compose.yml # Có thể giữ nếu mày muốn commit, nhưng thường để riêng ở repo infra
+*.dockerignore
+
+# TypeScript
+*.tsbuildinfo
+
+# Cypress
+cypress/videos/
+cypress/screenshots/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Misc
+*.swp
+*.bak

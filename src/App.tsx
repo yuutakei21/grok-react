@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { CssBaseline, Container, Typography, Button, Box } from '@mui/material';
-import FormExample from './components/FormExample';
-import Register from './components/Register';
-import Login from './components/Login';
 
+const FormExample = React.lazy(() => import('./components/FormExample'));
+const Register = React.lazy(() => import('./components/Register'));
+const Login = React.lazy(() => import('./components/Login'));
 
 const VERSION = import.meta.env.REACT_APP_VERSION || 'unknown';
 const BUILD_TIME = import.meta.env.REACT_APP_BUILD_TIME || 'unknown';
@@ -35,9 +35,9 @@ const App: React.FC = () => {
       <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/form" element={<FormExample />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/form" element={<React.Suspense fallback={<div>Loading...</div>}><FormExample /></React.Suspense>} />
+          <Route path="/register" element={<React.Suspense fallback={<div>Loading...</div>}><Register /></React.Suspense>} />
+          <Route path="/login" element={<React.Suspense fallback={<div>Loading...</div>}><Login /></React.Suspense>} />
         </Routes>
         <Box component="footer" sx={{ py: 2, textAlign: 'center', mt: 'auto' }}>
           <Typography variant="body2" color="textSecondary">
