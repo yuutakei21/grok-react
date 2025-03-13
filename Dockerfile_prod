@@ -1,15 +1,41 @@
+# Use an official Node.js runtime as a parent image
 FROM node:18-alpine AS builder
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN apk add --no-cache yarn && yarn install --frozen-lockfile
-COPY . .
-COPY .env .
+
+# Set build time and version environment variables
 ARG VERSION=$(node -p "require('./package.json').version")
 ARG BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-ENV REACT_APP_VERSION=$VERSION
-ENV REACT_APP_BUILD_TIME=$BUILD_TIME
+ENV BUILD_TIME=$BUILD_TIME
+ENV BUILD_VERSION=$BUILD_VERSION
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and yarn.lock files
+COPY package.json yarn.lock ./
+
+# Install dependencies using Yarn
+RUN yarn install
+
+# Copy the rest of the application code
+COPY . .
+COPY .env .
+
+
+# Build the application in production mode
 RUN yarn build
+
+# Use an Nginx image to serve the React application
 FROM nginx:alpine
+
+# Set environment variables for build time and version
+ENV BUILD_TIME=$BUILD_TIME
+ENV BUILD_VERSION=$BUILD_VERSION
+
+# Copy the built files from the previous stage
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose port 80
 EXPOSE 80
+
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
