@@ -1,27 +1,14 @@
-# Stage 1: Build ứng dụng React
 FROM node:18-alpine AS builder
-
 WORKDIR /app
-
-# Copy package.json và yarn.lock (nếu có)
 COPY package.json ./
-# Cài Yarn nếu chưa có và cài dependencies
-RUN apk add --no-cache yarn && yarn install --frozen-lockfile
-
-# Copy toàn bộ source code
+RUN npm install --production=false
 COPY . .
 COPY .env .
-
-# Inject version và build time
 ARG VERSION=$(node -p "require('./package.json').version")
 ARG BUILD_TIME=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 ENV REACT_APP_VERSION=$VERSION
 ENV REACT_APP_BUILD_TIME=$BUILD_TIME
-
-# Build ứng dụng với Yarn
-RUN yarn build
-
-# Stage 2: Serve file tĩnh bằng Nginx
+RUN npm run build
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80

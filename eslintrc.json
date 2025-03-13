@@ -20,7 +20,7 @@
       "error",
       {
         "name": "@mui/material",
-        "message": "Không được import toàn bộ @mui/material. Hãy import cụ thể component."
+        "message": "Không được import toàn bộ @mui/material."
       }
     ]
   }

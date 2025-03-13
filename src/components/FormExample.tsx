@@ -1,20 +1,24 @@
-// src/components/FormExample.js
 import React from 'react';
 import { Button, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { NumericInput } from '../ui-lib'; // Import từ ui-lib
+import { NumericInput } from '../ui-lib';
+
+interface FormValues {
+  name: string;
+  age: string;
+}
 
 const validationSchema = Yup.object({
   name: Yup.string().min(2, 'Tên phải ít nhất 2 ký tự').required('Tên là bắt buộc'),
   age: Yup.number().min(18, 'Tuổi phải từ 18 trở lên').required('Tuổi là bắt buộc'),
 });
 
-function FormExample() {
-  const formik = useFormik({
+const FormExample: React.FC = () => {
+  const formik = useFormik<FormValues>({
     initialValues: { name: '', age: '' },
-    validationSchema: validationSchema,
+    validationSchema,
     onSubmit: (values, { resetForm }) => {
       console.log('Form submitted:', values);
       resetForm();
@@ -42,6 +46,6 @@ function FormExample() {
       </Button>
     </Box>
   );
-}
+};
 
 export default FormExample;

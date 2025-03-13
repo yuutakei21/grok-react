@@ -8,7 +8,7 @@ import { CssBaseline, Container, Typography, Button, Box } from '@mui/material';
 const VERSION = process.env.REACT_APP_VERSION || 'unknown';
 const BUILD_TIME = process.env.REACT_APP_BUILD_TIME || 'unknown';
 
-function Home() {
+const Home: React.FC = () => {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" align="center" gutterBottom>
@@ -25,9 +25,9 @@ function Home() {
       </Button>
     </Container>
   );
-}
+};
 
-function App() {
+const App: React.FC = () => {
   return (
     <Router>
       <CssBaseline />
@@ -46,6 +46,6 @@ function App() {
       </Box>
     </Router>
   );
-}
+};
 
 export default App;

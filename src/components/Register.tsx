@@ -4,19 +4,26 @@ import { Link } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
+interface RegisterValues {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const validationSchema = Yup.object({
   username: Yup.string().min(3, 'Tên người dùng phải ít nhất 3 ký tự').required('Tên người dùng là bắt buộc'),
   email: Yup.string().email('Email không hợp lệ').required('Email là bắt buộc'),
   password: Yup.string().min(6, 'Mật khẩu phải ít nhất 6 ký tự').required('Mật khẩu là bắt buộc'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'Mật khẩu xác nhận không khớp')
+    .oneOf([Yup.ref('password')], 'Mật khẩu xác nhận không khớp')
     .required('Xác nhận mật khẩu là bắt buộc'),
 });
 
-function Register() {
-  const formik = useFormik({
+const Register: React.FC = () => {
+  const formik = useFormik<RegisterValues>({
     initialValues: { username: '', email: '', password: '', confirmPassword: '' },
-    validationSchema: validationSchema,
+    validationSchema,
     onSubmit: (values, { resetForm }) => {
       console.log('Register submitted:', values);
       resetForm();
@@ -79,6 +86,6 @@ function Register() {
       </Button>
     </Box>
   );
-}
+};
 
 export default Register;
