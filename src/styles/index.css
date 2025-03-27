@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Disable transform animations for DatePicker */
+.MuiDateCalendarSlideTransition-slideTransition {
+    transition: none !important;
+  }
+  
+  .MuiDateCalendarHeader-switchHeader {
+    transition: none !important;
+  }
+  
+  .MuiDateCalendar-transitionContainer {
+    transition: none !important;
+  }
